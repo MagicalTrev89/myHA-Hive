@@ -1,6 +1,6 @@
 """Support for the Hive devices."""
 import logging
-
+from .pyhiveapi import Pyhiveapi
 import voluptuous as vol
 
 from homeassistant.const import (
@@ -15,6 +15,7 @@ DATA_HIVE = 'data_hive'
 DEVICETYPES = {
     'binary_sensor': 'device_list_binary_sensor',
     'climate': 'device_list_climate',
+    'water_heater': 'device_list_water_heater',
     'light': 'device_list_light',
     'switch': 'device_list_plug',
     'sensor': 'device_list_sensor',
@@ -43,12 +44,9 @@ class HiveSession:
     attributes = None
     trv = None
 
-
 def setup(hass, config):
     """Set up the Hive Component."""
-    from .pyhiveapi import Pyhiveapi
-    """from .rob import Rob"""
-
+    
     session = HiveSession()
     session.core = Pyhiveapi()
 
@@ -70,7 +68,6 @@ def setup(hass, config):
     session.switch = Pyhiveapi.Switch()
     session.weather = Pyhiveapi.Weather()
     session.attributes = Pyhiveapi.Attributes()
-    """session.trv = Pyhiveapi.TRV()"""
     hass.data[DATA_HIVE] = session
 
     for ha_type, hive_type in DEVICETYPES.items():
