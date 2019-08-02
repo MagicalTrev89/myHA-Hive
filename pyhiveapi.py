@@ -2925,6 +2925,5 @@ class Pyhiveapi:
                                      " is : " + str(battery_level_return) + "%")
                 else:
                     Pyhiveapi.logger("Device does not have battery info : " + node_id)
-
-        return battery_level_return
+            return battery_level_return
         
