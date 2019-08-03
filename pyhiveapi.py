@@ -1147,6 +1147,36 @@ class Pyhiveapi:
 
             return round(float(current_temp_return),1)
 
+        def operational_status(self, node_id):
+            node_index = -1
+
+            current_op_return = ""
+            current_op_tmp = ""
+            current_op_found = False
+
+            if len(HSC.products.heating) > 0:
+                for current_node_index in range(0, len(HSC.products.heating)):
+                    if "id" in HSC.products.heating[current_node_index]:
+                        if HSC.products.heating[current_node_index]["id"] == node_id:
+                            node_index = current_node_index
+                            break
+                if node_index != -1:
+                    if "props" in HSC.products.heating[node_index]:
+                        if "working" in HSC.products.heating[node_index]["props"]:
+                            current_op_tmp = (HSC.products.heating[node_index]
+                                                ["props"]["working"])
+                            current_op_found = True
+            if current_op_found:
+                NODE_ATTRIBS[current_node_attribute] = current_op_tmp
+                current_op_return = current_op_tmp
+            else:
+                if current_node_attribute in NODE_ATTRIBS:
+                    current_op_return = NODE_ATTRIBS.get(current_node_attribute)
+                else:
+                    current_op_return = "unknown"
+            
+            return current_op_return
+
         def minmax_temperatures(self, node_id):
             """Min/Max Temp"""
             if node_id in HSC.data.minmax:
