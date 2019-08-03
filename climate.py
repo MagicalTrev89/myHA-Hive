@@ -2,7 +2,7 @@
 from homeassistant.components.climate import ClimateDevice
 from homeassistant.components.climate.const import (
     HVAC_MODE_AUTO, HVAC_MODE_HEAT, HVAC_MODE_OFF, PRESET_BOOST,
-    SUPPORT_PRESET_MODE, SUPPORT_TARGET_TEMPERATURE, PRESET_NONE, CURRENT_HVAC_IDLE)
+    SUPPORT_PRESET_MODE, SUPPORT_TARGET_TEMPERATURE, PRESET_NONE, CURRENT_HVAC_IDLE, CURRENT_HVAC_OFF, CURRENT_HVAC_HEAT)
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
 
 from . import DATA_HIVE, DOMAIN
@@ -17,6 +17,12 @@ HASS_TO_HIVE_STATE = {
     HVAC_MODE_AUTO: 'SCHEDULE',
     HVAC_MODE_HEAT: 'MANUAL',
     HVAC_MODE_OFF: 'OFF',
+}
+
+HIVE_TO_HASS_HVAC_ACTION = {
+    'UNKNOWN': CURRENT_HVAC_OFF,
+    'false': CURRENT_HVAC_IDLE,
+    'true': CURRENT_HVAC_HEAT
 }
 
 SUPPORT_FLAGS = SUPPORT_TARGET_TEMPERATURE | SUPPORT_PRESET_MODE
@@ -115,7 +121,8 @@ class HiveClimateEntity(ClimateDevice):
     @property
     def hvac_action(self):
         """Return current HVAC action."""
-        return CURRENT_HVAC_IDLE
+
+        return HIVE_TO_HASS_HVAC_ACTION[self.session.heating.operational_status(self.node_id)]
 
     @property
     def temperature_unit(self):

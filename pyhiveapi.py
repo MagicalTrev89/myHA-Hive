@@ -1173,7 +1173,7 @@ class Pyhiveapi:
                 if current_node_attribute in NODE_ATTRIBS:
                     current_op_return = NODE_ATTRIBS.get(current_node_attribute)
                 else:
-                    current_op_return = "unknown"
+                    current_op_return = "UNKNOWN"
             
             return current_op_return
 
