@@ -1154,6 +1154,8 @@ class Pyhiveapi:
             current_op_tmp = ""
             current_op_found = False
 
+            current_node_attribute = "Heating_OperationalStatus_" + node_id
+
             if len(HSC.products.heating) > 0:
                 for current_node_index in range(0, len(HSC.products.heating)):
                     if "id" in HSC.products.heating[current_node_index]:
